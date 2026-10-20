@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.0 — 20/10/2026
+
+- The plugin is now called `refute-first-review` (it was `pr-review`, which clashed with several similar names). The skill inside is still `pr-review`. Existing installs migrate automatically through the marketplace's `renames` entry.
+- Added `.claude-plugin/plugin.json`, the standard plugin manifest, so the repo is both a plugin and a one-plugin marketplace.
+
 ## 1.1.0 — 20/10/2026
 
 From a second real run, on a retry change (see the [case study](https://jovanmb.github.io/ai-engineering-notes/retry-case-study.html)):

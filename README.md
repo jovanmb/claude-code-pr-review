@@ -1,6 +1,6 @@
-# pr-review: adversarial PR review for Claude Code
+# refute-first-review: adversarial PR review for Claude Code
 
-A Claude Code skill that reviews a pull request the way a sceptical staff engineer would. It assumes the diff is wrong until the code proves otherwise, and then tries to prove its own findings wrong before reporting them.
+A Claude Code plugin (one skill, `pr-review`) that reviews a pull request the way a sceptical staff engineer would. It assumes the diff is wrong until the code proves otherwise, and then tries to prove its own findings wrong before reporting them.
 
 It is read-only. It never approves, merges, pushes or posts unless you ask, and even then it shows you the exact comment first.
 
@@ -26,8 +26,10 @@ As a plugin, in Claude Code:
 
 ```
 /plugin marketplace add jovanmb/claude-code-pr-review
-/plugin install pr-review@jovanmb-skills
+/plugin install refute-first-review@jovanmb-skills
 ```
+
+It adds about 140 tokens to every session (the skill's description) and about 3,500 each time a review runs.
 
 Or copy `skills/pr-review/` into `~/.claude/skills/` (or `.claude/skills/` in a project).
 

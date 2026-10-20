@@ -1,21 +1,14 @@
 {
   "name": "jovanmb-skills",
-  "owner": {
-    "name": "Jovan Blanco"
-  },
-  "metadata": {
-    "description": "Claude Code skills by Jovan Blanco",
-    "version": "1.1.0"
-  },
+  "description": "Claude Code plugins by Jovan Blanco",
+  "owner": { "name": "Jovan Blanco" },
+  "renames": { "pr-review": "refute-first-review" },
   "plugins": [
     {
-      "name": "pr-review",
-      "description": "Adversarial, read-only pull request review: nine lenses chosen per diff, a refutation pass on every finding, and a verdict-first report with a QA handoff",
-      "source": "./",
-      "strict": false,
-      "skills": [
-        "./skills/pr-review"
-      ]
+      "name": "refute-first-review",
+      "description": "Adversarial, read-only pull request review: nine lenses chosen per diff, every finding must survive a refutation pass, and a verdict-first report with a QA handoff",
+      "category": "productivity",
+      "source": "./"
     }
   ]
 }
