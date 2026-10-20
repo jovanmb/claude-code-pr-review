@@ -18,6 +18,8 @@ I planted a SQL injection in a five-file PR and gave it to a fresh subagent runn
 
 [Read the full case study →](https://jovanmb.github.io/ai-engineering-notes/pr-review-case-study.html)
 
+A second run targeted a retry change whose tests all passed. It found the planted double-post, then a request-hangs-forever bug I'd written without noticing, and exposed a gap in when the skill demands independent refuters. That became version 1.1. [Read it →](https://jovanmb.github.io/ai-engineering-notes/retry-case-study.html)
+
 ## Install
 
 As a plugin, in Claude Code:

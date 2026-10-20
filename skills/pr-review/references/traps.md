@@ -39,6 +39,9 @@ Recurring ways a change looks right and isn't. Used by `pr-review`, and useful t
 - **Migrations:** before code; immutable once applied; expand/contract when another app shares the DB; reference data as a migration, not a local seed.
 - **Check column names against the schema** before writing SQL. Don't guess from a similar table.
 
+## Timeouts
+- **A timer cleared when the headers arrive** leaves the body read unbounded: a stalled response hangs forever with no error and no retry. Keep the deadline armed until the body is read.
+
 ## Pagination and boundaries
 - **Reading only the first page** of a capped API. (A list of 151 read as 100 picks the wrong "latest" item and raises no error.)
 - Page 0, the last page, zero rows.
