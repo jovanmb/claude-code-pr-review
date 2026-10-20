@@ -31,7 +31,7 @@ As a plugin, in Claude Code:
 /plugin install skeptical-reviewer@jovanmb-skills
 ```
 
-It adds about 140 tokens to every session (the skill's description) and about 3,500 each time a review runs.
+It adds about 220 tokens to every session (the agent's and the skill's descriptions) and about 3,500 each time a review runs.
 
 Or copy `skills/pr-review/` into `~/.claude/skills/` (or `.claude/skills/` in a project).
 
