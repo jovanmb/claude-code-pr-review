@@ -1,10 +1,12 @@
-# refute-first-review: adversarial PR review for Claude Code
+# skeptical-reviewer: a PR review agent for Claude Code
 
-A Claude Code plugin (one skill, `pr-review`) that reviews a pull request the way a sceptical staff engineer would. It assumes the diff is wrong until the code proves otherwise, and then tries to prove its own findings wrong before reporting them.
+A Claude Code plugin with a reviewer **agent** and the `pr-review` skill it follows. It reviews a pull request the way a sceptical staff engineer would. It assumes the diff is wrong until the code proves otherwise, and then tries to prove its own findings wrong before reporting them.
 
 It is read-only. It never approves, merges, pushes or posts unless you ask, and even then it shows you the exact comment first.
 
 ## Why
+
+**It reviews against your codebase, not a textbook.** Before judging anything it reads your instruction files, contributing guide, ADRs and linter configs, and compares each changed file with its neighbours. Breaking a documented house rule counts; a generic principle (SOLID, DRY, YAGNI) only counts when it has a concrete cost. The report lists the standards it applied.
 
 AI reviewers are good at producing plausible findings. The hard part is making them **right**: no invented requirements, no "this symbol doesn't exist" from a stale checkout, and no severity inflation. This skill is built around that:
 
@@ -26,7 +28,7 @@ As a plugin, in Claude Code:
 
 ```
 /plugin marketplace add jovanmb/claude-code-pr-review
-/plugin install refute-first-review@jovanmb-skills
+/plugin install skeptical-reviewer@jovanmb-skills
 ```
 
 It adds about 140 tokens to every session (the skill's description) and about 3,500 each time a review runs.
@@ -35,11 +37,14 @@ Or copy `skills/pr-review/` into `~/.claude/skills/` (or `.claude/skills/` in a 
 
 ## Use
 
+Ask in plain words, or pick the agent from the `@` menu:
+
 ```
-review PR 123
-review https://github.com/acme/api/pull/123
-self-review my branch
+use the skeptical-reviewer agent to review PR 123
+@agent-skeptical-reviewer:skeptical-reviewer review this branch against main
 ```
+
+The agent works in its own context window: all the file reading, proof scripts and refutation happen there, and only the report comes back to your conversation.
 
 It needs `git` access to the repository. For PR metadata and comment threads it uses whatever your host offers (for example `gh` for GitHub).
 
@@ -49,8 +54,8 @@ It needs `git` access to the repository. For PR metadata and comment threads it 
 |---|---|
 | 0. Route and ingest | Reads the PR, **all** comment threads (paginated to the end) and the ticket. Takes the diff from git, not the host API, and checks symbols at the PR ref. |
 | 1. Understand | Reads the ticket **before** the code, and turns each acceptance criterion into a checkable behaviour. |
-| 2. Investigate | Traces entry point → handler → data → side effects. Finds the existing feature the PR imitates and compares against it. |
-| 3. Interrogate | Profiles the diff, then runs the matching lenses out of nine: architecture, security (OWASP sweep), authN/authZ, validation and data integrity, loopholes and edge cases, frontend, infra and config, ticket fit, and maintainability (suggest-only). |
+| 2. Investigate | **Learns the house rules first:** instruction files, contributing guide, ADRs, linter and analyser configs, and the neighbouring files' patterns. Then traces entry point → handler → data → side effects. Finds the existing feature the PR imitates and compares against it. |
+| 3. Interrogate | Profiles the diff, then runs the matching lenses out of nine: architecture, security (OWASP sweep), authN/authZ, validation and data integrity, loopholes and edge cases, frontend, infra and config, ticket fit, and design principles (OOP/SOLID, encapsulation, coupling, DRY vs the wrong abstraction, YAGNI), judged against the codebase's own standards. |
 | 4. Refute | Tries to kill each finding. Reachability arguments lower *exploitability*, never the severity of a defect that survived. |
 | 5. Conclude | Verdict first. Then AC fit, ranked findings, a lens coverage table, a verification plan and a QA handoff with pass/fail oracles. |
 

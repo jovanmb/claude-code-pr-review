@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.0 — 20/10/2026
+
+- **Now an agent.** `agents/skeptical-reviewer.md` runs the review in its own context window, preloads the `pr-review` skill, and can spawn refute subagents. The plugin is renamed `skeptical-reviewer`; installs under either earlier name migrate automatically.
+- **Codebase-aware.** Before judging, the review reads the repository's written rules (instruction files, contributing guide, ADRs), its enforced rules (linter, formatter and analyser configs) and its unwritten ones (2–3 neighbouring files of each kind). The report opens with **Standards applied**.
+- **Design principles lens.** Lens 9 now covers OOP and SOLID, encapsulation, cohesion and coupling, DRY versus the wrong abstraction, YAGNI and error handling, judged in the codebase's own paradigm. It runs on every code change. Breaking a documented house standard is graded like any other finding; a generic principle stays suggest-only unless its concrete cost can be named.
+
 ## 1.2.0 — 20/10/2026
 
 - The plugin is now called `refute-first-review` (it was `pr-review`, which clashed with several similar names). The skill inside is still `pr-review`. Existing installs migrate automatically through the marketplace's `renames` entry.

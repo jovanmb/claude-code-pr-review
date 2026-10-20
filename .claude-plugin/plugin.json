@@ -1,10 +1,19 @@
 {
-  "name": "refute-first-review",
-  "description": "Adversarial, read-only pull request review: nine lenses chosen per diff, every finding must survive a refutation pass, and a verdict-first report with a QA handoff",
-  "version": "1.2.0",
-  "author": { "name": "Jovan Blanco" },
+  "name": "skeptical-reviewer",
+  "description": "A skeptical, read-only pull request reviewer agent: nine lenses chosen per diff, every finding must survive a refutation pass, and a verdict-first report with a QA handoff",
+  "version": "1.3.0",
+  "author": {
+    "name": "Jovan Blanco"
+  },
   "homepage": "https://github.com/jovanmb/claude-code-pr-review",
   "repository": "https://github.com/jovanmb/claude-code-pr-review",
   "license": "MIT",
-  "keywords": ["code-review", "pull-request", "security", "refutation", "qa"]
+  "keywords": [
+    "code-review",
+    "pull-request",
+    "agent",
+    "security",
+    "refutation",
+    "qa"
+  ]
 }

@@ -1,12 +1,17 @@
 {
   "name": "jovanmb-skills",
   "description": "Claude Code plugins by Jovan Blanco",
-  "owner": { "name": "Jovan Blanco" },
-  "renames": { "pr-review": "refute-first-review" },
+  "owner": {
+    "name": "Jovan Blanco"
+  },
+  "renames": {
+    "pr-review": "skeptical-reviewer",
+    "refute-first-review": "skeptical-reviewer"
+  },
   "plugins": [
     {
-      "name": "refute-first-review",
-      "description": "Adversarial, read-only pull request review: nine lenses chosen per diff, every finding must survive a refutation pass, and a verdict-first report with a QA handoff",
+      "name": "skeptical-reviewer",
+      "description": "A skeptical, read-only pull request reviewer agent: nine lenses chosen per diff, every finding must survive a refutation pass, and a verdict-first report with a QA handoff",
       "category": "productivity",
       "source": "./"
     }

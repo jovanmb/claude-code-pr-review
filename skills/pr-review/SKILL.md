@@ -24,6 +24,12 @@ Read the ticket **before the code**. Restate the problem, current vs expected be
 
 ## 2. Investigate
 
+**Learn the house rules before judging the code.** The codebase's own standards are the bar, not a textbook:
+- **Written rules:** agent instruction files (`CLAUDE.md`, `AGENTS.md`, `.cursorrules`), `CONTRIBUTING`, architecture decision records (ADRs), style guides and architecture docs.
+- **Enforced rules:** linter, formatter and analyser configs (`.editorconfig`, ESLint, Prettier, `tsconfig` strictness, Roslyn/StyleCop rulesets, RuboCop, Ruff, golangci-lint) and the checks CI runs.
+- **Unwritten rules:** read 2–3 neighbouring files of the same kind as each changed file. Note naming, layering, how dependencies are injected, error handling, logging, immutability, and test structure.
+- Record what you found; it goes in the report as **Standards applied**. Where the repo is silent, fall back to widely accepted principles (lens 9), applied in the paradigm the codebase already uses.
+
 - Orient cheaply first: a codebase map, route index or knowledge graph if the repo has one; then read only the files you need.
 - Trace the path: entry point → handler → data access → side effects → response.
 - Find the **reference sibling** the PR copied (the existing feature it imitates) and diff against it. Divergence from the sibling is a lead.
@@ -44,7 +50,7 @@ Classify the changed paths into archetypes (often more than one) and activate th
 
 **The profile sets defaults; content overrides it.** If the diff contains a lens's fingerprint, that lens runs, whatever the archetype says. Fingerprints: SQL or a raw write, user input, an HTML-rendering surface, a money field, an auth change, a secret, a server-side URL fetch, a config read added or removed. Classify a file by what it *is*: a rendered email template is not "copy"; a CSS-only change is never trivial by size (a deleted rule changes every page that loads the bundle).
 
-**Always run:** Ticket & Scope Fit. **Whenever existing code changes:** blast radius.
+**Always run:** Ticket & Scope Fit. **Whenever code changes** (not docs or copy): Design principles, against the house rules from Section 2. **Whenever existing code changes:** blast radius.
 
 ### The nine lenses
 
@@ -56,7 +62,10 @@ Classify the changed paths into archetypes (often more than one) and activate th
 6. **Frontend & UX** (what the user sees; non-UI client code such as a data adapter belongs to Architecture and Ticket fit). **Measure, don't reason**: for layout or CSS, load the page and read computed styles and bounding boxes; test at the exact breakpoint. Accessibility (names, roles, focus, invalid states); design tokens over literals; cache-invalidation keys that match the read keys; loading, error and empty states; no raw HTML from user content; stable list keys; double-submit guards; client/server validation parity; shared money and date formatters.
 7. **Infra & config.** Committed secrets; right environment/stage; least privilege; safe defaults for new flags; CI that keeps checks on and doesn't expose secrets to forks; runtime version parity; deploy ordering; the **config-dependency gate** below.
 8. **Ticket & scope fit** (always). Every AC truly met; deferred parts honestly deferred, not half-wired; divergences called out; no scope creep; existing fixtures and golden files untouched.
-9. **Maintainability & testability.** *Suggest-only: never changes the verdict.* Untested new branching (Medium only on money, security or complex state); an extraction that would make something testable; principle violations tied to a concrete future cost. "Clean" means consistent with house style and the sibling, not a textbook.
+9. **Design principles & maintainability.** Judge design *in the paradigm the codebase uses*: don't demand classes in a functional codebase, or functions where the house style is objects.
+   - **Object-oriented code:** single responsibility (one reason to change); open/closed through the extension points the codebase already uses; Liskov (an override that narrows inputs, widens failures or ignores the base contract); interface segregation; dependency inversion through the house DI pattern rather than `new`-ing collaborators; encapsulation (invariants enforced inside the type, no leaked mutable state, no public setters that bypass validation); composition over inheritance.
+   - **Any paradigm:** cohesion and coupling (a change that makes one module know another's internals); DRY versus the wrong abstraction (duplication beats a premature shared helper with flags); YAGNI (configuration, layers or generics nothing needs yet); clear names in the domain's language; explicit error handling (no swallowed exceptions, no errors used for control flow); pure logic separated from I/O so it can be tested; untested new branching.
+   - **Grading:** breaking a **documented** house standard (an ADR, a lint rule, the contributing guide) is a finding graded like any other, and it blocks when the standard says *must*. A **generic** principle is suggest-only unless you can name its concrete cost: a defect it causes now, or a specific change it will make harder. "Clean" means consistent with the house rules and the sibling, not a textbook.
 
 ### Config-dependency gate
 
@@ -103,6 +112,7 @@ If a would-be blocker is about to become a "minor comment", escalate instead. Ne
 
 **Report** (in this order)
 0. **Verdict**, one line with the reason.
+   **Standards applied:** the house rules you found (files, configs, the neighbouring files you compared against), or "none documented; general principles only".
 1. **Ticket fit**: each AC met / partial / not met.
 2. **Findings**, ranked by severity, then by the priority order under Tone. On multi-round PRs, the resolution ledger first.
 3. **Lens sweep table**: `Lens | Checked | Result` (✅ / ⚠ / ❌ / n/a). Every lens gets a row: green means checked, n/a proves deliberate scoping.
