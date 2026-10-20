@@ -1,0 +1,14 @@
+{
+  "name": "jovanmb-skills",
+  "owner": { "name": "Jovan Blanco" },
+  "metadata": { "description": "Claude Code skills by Jovan Blanco", "version": "1.0.0" },
+  "plugins": [
+    {
+      "name": "pr-review",
+      "description": "Adversarial, read-only pull request review: nine lenses chosen per diff, a refutation pass on every finding, and a verdict-first report with a QA handoff",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/pr-review"]
+    }
+  ]
+}
