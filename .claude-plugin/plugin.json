@@ -1,7 +1,7 @@
 {
   "name": "skeptical-reviewer",
   "description": "A skeptical, read-only pull request reviewer agent: nine lenses chosen per diff, every finding must survive a refutation pass, and a verdict-first report with a QA handoff",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "author": {
     "name": "Jovan Blanco"
   },

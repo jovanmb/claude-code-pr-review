@@ -11,7 +11,7 @@ It is read-only. It never approves, merges, pushes or posts unless you ask, and 
 AI reviewers are good at producing plausible findings. The hard part is making them **right**: no invented requirements, no "this symbol doesn't exist" from a stale checkout, and no severity inflation. This skill is built around that:
 
 - **Every finding needs a concrete failure scenario** (this input or state leads to this wrong output, crash or exposure) and **file:line evidence at the PR's real ref**. If it can't construct the trigger, it doesn't raise the finding.
-- **Every finding goes through a refutation pass.** For money, security and auth findings, it spawns 2–3 subagents whose only job is to argue the finding is wrong.
+- **Every finding goes through a refutation pass.** For money, security, auth and data-integrity findings, and any finding that alone would block the PR, it spawns 2–3 subagents whose only job is to argue the finding is wrong.
 - **Lenses are chosen per diff.** A migration-only PR gets the data lens, a CSS change gets the frontend lens, and a security fingerprint (raw SQL, user input, a secret) switches its lens on whatever the file type.
 
 ## In a real run
@@ -21,6 +21,8 @@ I planted a SQL injection in a five-file PR and gave it to a fresh subagent runn
 [Read the full case study →](https://jovanmb.github.io/ai-engineering-notes/pr-review-case-study.html)
 
 A second run targeted a retry change whose tests all passed. It found the planted double-post, then a request-hangs-forever bug I'd written without noticing, and exposed a gap in when the skill demands independent refuters. That became version 1.1. [Read it →](https://jovanmb.github.io/ai-engineering-notes/retry-case-study.html)
+
+A third run, through the packaged agent, targeted design in code that works. Judged against the codebase's own documented rules, it found all four planted design problems and mutation-tested my weak test, but let a documented architecture rule be downgraded to a suggestion. That became version 1.4. [Read it →](https://jovanmb.github.io/ai-engineering-notes/design-case-study.html)
 
 ## Install
 

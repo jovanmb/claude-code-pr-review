@@ -65,7 +65,7 @@ Classify the changed paths into archetypes (often more than one) and activate th
 9. **Design principles & maintainability.** Judge design *in the paradigm the codebase uses*: don't demand classes in a functional codebase, or functions where the house style is objects.
    - **Object-oriented code:** single responsibility (one reason to change); open/closed through the extension points the codebase already uses; Liskov (an override that narrows inputs, widens failures or ignores the base contract); interface segregation; dependency inversion through the house DI pattern rather than `new`-ing collaborators; encapsulation (invariants enforced inside the type, no leaked mutable state, no public setters that bypass validation); composition over inheritance.
    - **Any paradigm:** cohesion and coupling (a change that makes one module know another's internals); DRY versus the wrong abstraction (duplication beats a premature shared helper with flags); YAGNI (configuration, layers or generics nothing needs yet); clear names in the domain's language; explicit error handling (no swallowed exceptions, no errors used for control flow); pure logic separated from I/O so it can be tested; untested new branching.
-   - **Grading:** breaking a **documented** house standard (an ADR, a lint rule, the contributing guide) is a finding graded like any other, and it blocks when the standard says *must*. A **generic** principle is suggest-only unless you can name its concrete cost: a defect it causes now, or a specific change it will make harder. "Clean" means consistent with the house rules and the sibling, not a textbook.
+   - **Grading:** breaking a **documented** house standard (an ADR, a lint rule, the contributing guide, an architecture section of the README, a module's header comment) is a finding graded like any other, on its concrete cost. A rule written as a description ("business rules live in `core`") is still documented: it is never suggest-only for being phrased descriptively. *Must* decides only whether it blocks. A **generic** principle is suggest-only unless you can name its concrete cost: a defect it causes now, or a specific change it will make harder. "Clean" means consistent with the house rules and the sibling, not a textbook.
 
 ### Config-dependency gate
 
@@ -91,13 +91,15 @@ Treat every candidate as a hypothesis and try to kill it:
 - Re-read the surrounding code at the PR ref. Does an upstream guard, validator or constraint already prevent it?
 - **Construct the exact input or state that triggers it. If you can't, it isn't a finding.**
 - Check the resolution ledger (below): already fixed, accepted or settled?
+- **Mutation-check the PR's own tests.** In a scratch copy, break the behaviour each new test claims to cover (skip a page, change a default, drop a case). If the suite still passes, the test doesn't cover it: that's evidence for an AC's "tested" status, not an opinion.
 - For money, security, auth or data-integrity findings, **and any finding that alone would force ❌**, spawn **2–3 refute subagents in one message**, each arguing the finding is wrong. It survives only if all fail. A runnable reproduction proves the defect exists; refuters test whether it's reachable, already guarded or mis-graded. Do both.
 
 Refutation protects **precision**. Never use it to soften a verdict once a finding has survived.
 
 - **Exploitability scale.** High: hit in normal use, no special conditions. Medium: needs an uncommon but realistic condition (a slow network, a proxy, a particular config). Low: needs special access or a condition this deployment doesn't have.
 - **Severity vs exploitability.** Reachability arguments (localhost only, behind auth, no caller yet) lower *exploitability*; they never lower the severity label of a defect that survived.
-- **A refuter that argues for a downgrade** rather than disproving the finding: the finding survives. Record the argument on the exploitability axis.
+- **A refuter that argues for a downgrade** rather than disproving the finding: the finding survives. Record the argument on the exploitability axis. This applies to design and architecture findings too.
+- **Never write a refuter's conclusion before its report arrives.** If you are waiting, wait. Summarise only what each refuter actually returned.
 
 Each surviving finding needs: observation · **concrete failure scenario** (input/state → wrong output, crash or exposure) · **evidence** (file:line at the PR ref, plus the sibling, ADR or precedent it contradicts) · severity × exploitability (and magnitude for money) · the smallest fix · confidence, or **UNVERIFIED** with the check that would settle it.
 

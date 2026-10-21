@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.4.0 — 21/10/2026
+
+From a third real run, the first through the packaged agent, on a design problem (see the [case study](https://jovanmb.github.io/ai-engineering-notes/design-case-study.html)):
+
+- A documented house rule written as a description ("business rules live in `core`"), including README architecture sections and module header comments, is graded on its concrete cost and never dropped to suggest-only for its phrasing.
+- The refuter downgrade rule now explicitly covers design and architecture findings.
+- Never write a refuter's conclusion before its report arrives.
+- New step: mutation-check the PR's own tests in a scratch copy.
+- README: refutation scope matches the skill (data integrity and any blocking finding).
+
 ## 1.3.0 — 20/10/2026
 
 - **Now an agent.** `agents/skeptical-reviewer.md` runs the review in its own context window, preloads the `pr-review` skill, and can spawn refute subagents. The plugin is renamed `skeptical-reviewer`; installs under either earlier name migrate automatically.
